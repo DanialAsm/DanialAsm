@@ -47,6 +47,34 @@ function FindNearestEnemy()
     return ClosestPlayer
 end
 
+local function highlight(enemy)
+    if plr and plr.Character then
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character then
+                for _, obj in pairs(player.Character:GetChildren()) do
+                    if obj:IsA("Highlight") then
+                        obj:Destroy()
+                    end
+                end
+            end
+        end
+
+        for _, obj in pairs(plr.Character:GetChildren()) do
+            if obj:IsA("Highlight") then
+                obj:Destroy()
+            end
+        end
+        local highlight = Instance.new("Highlight")
+        highlight.Parent = plr.Character
+        highlight.FillColor = Color3.new(0.411765, 0.501961, 1.000000)
+        highlight.OutlineColor = Color3.new(0.031373, 0.031373, 0.031373)
+        highlight.FillTransparency = 0.6
+        highlight.OutlineTransparency = 0
+    end
+end
+
+
+
 local enemy = nil
 -- Function to aim the camera at the nearest enemy's HumanoidRootPart
 RunService.Heartbeat:Connect(
@@ -66,6 +94,7 @@ Mouse.KeyDown:Connect(function(k)
             Locked = not Locked	
             if Locked then	
                 enemy = FindNearestEnemy()
+		highlight(enemy)
                 CamlockState = true
              else	
                 if enemy ~= nil then	
